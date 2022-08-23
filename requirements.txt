@@ -1,0 +1,13 @@
+ipykernel
+jupyterlab
+
+soundfile
+librosa
+sklearn
+opencv-python
+matplotlib
+numpy
+
+torch
+torchvision
+torchaudio
