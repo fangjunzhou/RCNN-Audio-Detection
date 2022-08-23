@@ -5,6 +5,7 @@ soundfile
 librosa
 sklearn
 opencv-python
+opencv-contrib-python
 matplotlib
 numpy
 
