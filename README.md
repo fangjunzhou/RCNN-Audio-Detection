@@ -1,5 +1,13 @@
 # RCNN-Audio-Detection
 
+## Dependencies
+
+This project uses the older version of pytorch, installed using pip.
+
+```bash
+pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
+```
+
 ## Use `generate-data-set.ipynb` to Generate Data Set
 
 The `generate-data-set.ipynb` notebook contains following steps:

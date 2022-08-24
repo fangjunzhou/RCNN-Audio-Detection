@@ -10,6 +10,12 @@ matplotlib
 numpy
 pandas
 
+# Uncomment if you want to use the GPU
+# --extra-index-url https://download.pytorch.org/whl/cu113
+# torch==1.11.0+cu113
+# torchvision==0.12.0+cu113
+# torchaudio==0.11.0
+
 torch
 torchvision
 torchaudio
