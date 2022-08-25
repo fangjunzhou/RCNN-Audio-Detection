@@ -1,5 +1,7 @@
 # RCNN-Audio-Detection
 
+![image](https://user-images.githubusercontent.com/79500078/186568402-45d6a0d5-cf2a-488c-a3eb-d8e1e76e7136.png)
+
 ## Dependencies
 
 This project uses the older version of pytorch, installed using pip.
@@ -61,8 +63,4 @@ For each proposal in the training set, a label (positive/negative) is given. And
 
 # Performance
 
-With 56 positive labels and 56 negative labels, the model can achieve 90% accuracy in bounding box classification in testing set:
-
-![image](https://user-images.githubusercontent.com/79500078/186281626-6f80643e-c795-4eff-8a32-12c60fb6f35d.png)
-
-Equal number of positive labels and negative labels is suggested to reduce bias.
+![image](https://user-images.githubusercontent.com/79500078/186568619-0f8d1d89-0354-45b4-bf15-c5262c0ff740.png)
