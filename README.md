@@ -1,6 +1,6 @@
 # RCNN-Audio-Detection
 
-![image](https://user-images.githubusercontent.com/79500078/186568402-45d6a0d5-cf2a-488c-a3eb-d8e1e76e7136.png)
+![picture 6](/images/2022-08-24-23-17-56-cover.png)
 
 ## Dependencies
 
@@ -45,7 +45,7 @@ After enhancement, a sliding window is applied for normalized spectrogram size. 
 
 The generated windows may look like this:
 
-![image](https://user-images.githubusercontent.com/79500078/186280899-3a84a315-b834-40da-9929-56f60bce7f59.png)
+![picture 3](/images/2022-08-24-22-41-27-sliding-windows.png)
 
 ### Selective Search Region Proposal
 
@@ -53,14 +53,60 @@ For each window, selective search algorithm will be applied to generate region p
 
 For each proposal, and ground truth label, the overlapping area ration will be calculated. Regions with good performance will be choosen as positive proposals.
 
-![image](https://user-images.githubusercontent.com/79500078/186281216-316ed49f-ed69-4cbc-9538-08dd20b3b43b.png)
+![picture 4](/images/2022-08-24-22-42-06-positive-negative-search.png)
 
 ## Bounding Box Classification with `bounding-box-classifier.ipynb`
 
-After data set is generated, `bounding-box-classifier.ipynb` can use the data set to train a CNN model to classify the region proposal.
+After data set is generated, `bounding-box-classifier.ipynb` can use the data set to train a CNN model to classify the region proposal, and suggest offset.
 
 For each proposal in the training set, a label (positive/negative) is given. And BCELoss is apply as the loss function in this situation.
 
-# Performance
+Also, bounding box offset is also trained so the neural network can suggest the offset for each proposal.
 
-![image](https://user-images.githubusercontent.com/79500078/186568619-0f8d1d89-0354-45b4-bf15-c5262c0ff740.png)
+### RCNN Structure
+
+![picture 7](/images/2022-08-24-23-23-48-rcnn-structure.png)
+
+The entire RCNN takes 2 inputs:
+
+- The normalized spectrogram image in 1x64x64 format
+- Meta data in 1x3 format:
+  - Start frequency of the window
+  - End frequency of the window
+  - Time span of the window
+
+The neural network computes the following outputs:
+
+- If the window is positive, indicates the proposal is good or bad.
+- The suggested offset for the window.
+
+For example, following output means the neural network thinks the proposal is bad.
+
+And it suggests to move the window anchor 2.76 pixels left, and 0.16 pixels down, expand the window width by 4.97 pixels, and expand the window height by 1 pixel for better performance.
+
+```
+(array([[0.36625865]], dtype=float32),
+ array([[-2.7618032 , -0.16448733,  4.9751573 ,  1.0600426 ]],
+       dtype=float32))
+```
+
+### Performance
+
+With 110 seconds of audio, the data generator can generate about 1000 positive samples, and 3000 negative samples.
+
+Learning 100 epochs will reach 80% accuracy on the test set.
+
+![picture 8](/images/2022-08-24-23-28-59-machine-learning-performance.png)
+
+Although the classification accuracy is only 80%, the final performance can be good since the neural network can suggest the offset for each proposal.
+
+## Detect Audio
+
+The `audio-detection.ipynb` notebook contains following steps:
+
+- Load audio and RCNN model.
+- Selective search proposals.
+- Use RCNN model to filter the proposals.
+- Apply the suggested offset to the proposals for final detection.
+
+![picture 9](/images/2022-08-24-23-32-53-audio-detection-demo.png)
